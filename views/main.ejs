@@ -1,12 +1,51 @@
 <%- include('header') %>
+<div class="tictactoe-page">
 
-<div class="form-floating mb-3">
-  <input type="text" class="form-control" id="name" placeholder="">
-  <label for="name">Név</label>
+  <!--Room code-->
+  <h2 class="roomcode mb-3">roomcode</h2>
+ 
+  <!-- Left player -->
+  <div class="side-player left">
+    <div class="player-card x">
+      <span class="label">Player X</span>
+      <span class="name">Alice</span>
+      <hr>
+      <span class="name">Wins: <span><%= playerXpoint%></span></span>
+    </div>
+  </div>
+
+  <!-- Center board -->
+  <div class="center-area">
+    <div class="tictactoe-board">
+      <div class="cell x">X</div>
+      <div class="cell o">O</div>
+      <div class="cell"></div>
+
+      <div class="cell"></div>
+      <div class="cell x">X</div>
+      <div class="cell"></div>
+
+      <div class="cell o">O</div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+    <form action="/" method="get">
+        <button class="btn-back">← Back</button>
+    </form>
+    
+  </div>
+
+  <!-- Right player -->
+  <div class="side-player right">
+    <div class="player-card o">
+      <span class="label">Player O</span>
+      <span class="name">Bob</span>
+      <hr>
+      <span class="name">Wins: <span><%= playerOpoint%></span></span>
+    </div>
+  </div>
+
 </div>
-<div class="form-floating">
-  <input type="password" class="form-control" id="lobby" placeholder="">
-  <label for="lobby">Lobby kód</label>
-</div>
+
 
 <%- include('footer') %>

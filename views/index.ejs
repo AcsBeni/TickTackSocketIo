@@ -1,0 +1,18 @@
+<%- include('header') %>
+<form action="/main" method="get">
+  <div class="form-floating mb-3">
+      <input type="text" class="form-control" id="playerName" placeholder="">
+      <label for="playerName">Név</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input type="password" class="form-control" id="roomCode" placeholder="">
+      <label for="roomCode">Lobby kód</label>
+    </div>
+
+    <button class="btn btn-join w-100 mb-3">
+      Csatlakozás
+    </button>
+</form>
+
+<%- include('footer') %>

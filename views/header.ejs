@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tick-tack-toe</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/message.css">
     <script src="/js/bootstrap.min.js"></script>
 </head>
 <body data-bs-theme="dark">
-    <div class="container">
-        <header>
-            <h1>Tick-tack-toe - with socket.io</h1>
-        </header>
-        <main>
+    <%- include('message') %>
+  <div class="container app-container "  >
+    <header class="app-header text-center mb-4">
+      <h1>Tick-tack-toe</h1>
+      
+    </header>
+
+    <main class="app-card">

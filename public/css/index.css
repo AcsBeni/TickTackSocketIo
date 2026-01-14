@@ -1,0 +1,67 @@
+/* ===== Root colors ===== */
+:root {
+  --dark: #272932;
+  --green: #3DBF91;
+  --red: #F05D5E;
+  --white: #ffffff;
+}
+
+/* ===== Global ===== */
+body {
+  background: linear-gradient(135deg, #272932, #1f2026);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.app-container {
+  max-width: 420px;
+}
+
+
+/* ===== Card ===== */
+.app-card {
+  background-color: #2f313a;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* ===== Forms ===== */
+.form-control,
+.form-select {
+  background-color: #3a3c46;
+  border: none;
+  color: var(--white);
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #3a3c46;
+  color: var(--white);
+  border-color: var(--green);
+  box-shadow: 0 0 0 0.2rem rgba(61, 191, 145, 0.25);
+}
+
+label {
+  color: #bfc4d1;
+}
+
+/* ===== Button ===== */
+.btn-join {
+  background-color: var(--green);
+  color: var(--dark);
+  font-weight: 600;
+  padding: 0.75rem;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.btn-join:hover {
+  background-color: var(--red);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(240, 93, 94, 0.3);
+}
