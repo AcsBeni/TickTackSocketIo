@@ -25,10 +25,10 @@ function matchIsOver(player){
       break
   }
 }
-
+message = ""
 winner = ""
 details =""
-matchOver=false
+matchOver=true
 playerXpoint=0
 playerOpoint=0
 
