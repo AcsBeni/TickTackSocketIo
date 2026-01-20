@@ -12,19 +12,22 @@ let gameActive = true;
 let gameState = Array(9).fill("");
 
 let matchEnded = false
+let xPlayerReady = false
+let oPlayerReady = false
 
 let xPlayerWins=0
 let oPlayerWins=0
 let playersReady=0
 
 function getReady(){
+    //TODO: playereket chekolni, hogy ki ki, ready-nél elvenni a ready-t ha újra megnyomja a player
     if(matchEnded){
         playersReady++
         if(playersReady >=2){
             playersReady=2
             playerReady.textContent = playersReady
-            setTimeout(resetGame, 2000);
-            setTimeout(resetNumbers, 2000)
+            setTimeout(resetGame, 1500);
+            setTimeout(resetNumbers, 1500)
             return
         }
         playerReady.textContent = playersReady
@@ -38,7 +41,7 @@ function getReady(){
     gameState = Array(9).fill("");
     gameActive = true;
     currentPlayer = "X";
-    turnText.textContent = "Your turn: X";
+    turnText.textContent = "Rajtad a sor: X";
 
     cells.forEach(cell => {
         cell.textContent = "";
