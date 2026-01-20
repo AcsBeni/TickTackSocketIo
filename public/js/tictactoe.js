@@ -3,13 +3,49 @@ const cells = document.querySelectorAll(".cell");
 const turnText = document.getElementById("turnText");
 const xWinsEl = document.getElementById("xWins");
 const oWinsEl = document.getElementById("oWins");
+const playerReady = document.getElementById("playerReady")
+const buttonReady = document.querySelector(".btn-ready")
+
 
 let currentPlayer = "X";
 let gameActive = true;
 let gameState = Array(9).fill("");
 
+let matchEnded = false
+
 let xPlayerWins=0
 let oPlayerWins=0
+let playersReady=0
+
+function getReady(){
+    if(matchEnded){
+        playersReady++
+        if(playersReady >=2){
+            playersReady=2
+            playerReady.textContent = playersReady
+            setTimeout(resetGame, 2000);
+            setTimeout(resetNumbers, 2000)
+            return
+        }
+        playerReady.textContent = playersReady
+    }
+    function resetNumbers(){
+        playersReady =0
+        playerReady.textContent = playersReady
+        matchEnded = false
+    }
+    function resetGame() {
+    gameState = Array(9).fill("");
+    gameActive = true;
+    currentPlayer = "X";
+    turnText.textContent = "Your turn: X";
+
+    cells.forEach(cell => {
+        cell.textContent = "";
+        cell.className = "cell";
+    });
+}
+}
 
 const winningCombinations = [
   [0,1,2],
@@ -45,32 +81,20 @@ function handleCellClick(e) {
 
   gameActive = false;
 
-  setTimeout(resetGame, 1500);
+  matchEnded = true
   return;
 }
-function resetGame() {
-  gameState = Array(9).fill("");
-  gameActive = true;
-  currentPlayer = "X";
-  turnText.textContent = "Your turn: X";
-
-  cells.forEach(cell => {
-    cell.textContent = "";
-    cell.className = "cell";
-  });
-}
 
 
-
-  if (!gameState.includes("")) {
-    turnText.textContent = "Draw!";
-    gameActive = false;
-    setTimeout(resetGame, 1500);
-    return; 
-  }
+    if (!gameState.includes("")) {
+        turnText.textContent = "Draw!";
+        gameActive = false;
+        matchEnded = true
+        return; 
+    }
 
   currentPlayer = currentPlayer === "X" ? "O" : "X";
-  turnText.textContent = `Your turn: ${currentPlayer}`;
+  turnText.textContent = `Rajtad a sor: ${currentPlayer}`;
 }
 
 function checkWin() {
@@ -80,3 +104,4 @@ function checkWin() {
 }
 
 cells.forEach(cell => cell.addEventListener("click", handleCellClick));
+buttonReady.addEventListener("click", getReady)
