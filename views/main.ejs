@@ -10,28 +10,20 @@
       <span class="label">Player X</span>
       <span class="name">Alice</span>
       <hr>
-      <span class="name">Wins: <span><%= playerXpoint%></span></span>
+      <span class="name">Wins: <span id="xWins">0</span></span>
     </div>
   </div>
 
   <!-- Center board -->
-   <h2 class="roomcode mb-3">Your turn</h2>
-  <div class="center-area">
-    <div class="tictactoe-board">
-      <div class="cell x">X</div>
-      <div class="cell o">O</div>
-      <div class="cell"></div>
+  <div class="tictactoe-board" id="board">
+    <% for(let i = 0; i < 9; i++) { %>
+      <div class="cell" data-index="<%= i %>"></div>
+    <% } %>
+  </div>
 
-      <div class="cell"></div>
-      <div class="cell x">X</div>
-      <div class="cell"></div>
-
-      <div class="cell o">O</div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-    </div>
+  <h2 class="roomcode mb-3" id="turnText">Your turn: X</h2>
     <form action="/" method="get">
-        <button class="btn-back">← Back</button>
+        <button class="btn-back">← Leave</button>
     </form>
     
   </div>
@@ -42,11 +34,8 @@
       <span class="label">Player O</span>
       <span class="name">Bob</span>
       <hr>
-      <span class="name">Wins: <span><%= playerOpoint%></span></span>
+      <span class="name">Wins: <span id="oWins">0</span></span>
     </div>
   </div>
-
+  <%- include('footer') %>
 </div>
-
-
-<%- include('footer') %>

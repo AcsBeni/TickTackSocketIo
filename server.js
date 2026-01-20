@@ -5,33 +5,6 @@ const io = require('socket.io')(server);
 const ejs = require('ejs');
 const path = require('path')
 
-
-function matchIsOver(player){
-  matchOver = true
-  setTimeout(() => {
-    matchOver = false
-  }, 500);
-  message="Round over"
-  switch(player){
-    case "X":
-      playerXpoint ++;
-      winner = "X"
-      break;
-    case "Y":
-      playerYpoint ++;
-      winner = "Y"
-      break;
-    default:
-      break
-  }
-}
-message = ""
-winner = ""
-details =""
-matchOver=false
-playerXpoint=0
-playerOpoint=0
-
 const ROOMS=[]
 const ERRORS ={
     missingFields: "Hiányzó adatok"
