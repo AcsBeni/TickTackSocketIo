@@ -1,44 +1,64 @@
 <%- include('header') %>
+
 <div class="tictactoe-page">
 
-  <!--Room code-->
-  <h2 class="roomcode mb-3">Lobby kód</h2>
- 
-  <!-- Left player -->
+  <!-- Room code -->
+  <h2 class="roomcode mb-3">
+    Lobby kód: <span id="roomCode"></span>
+  </h2>
+
+  <!-- Left player (X) -->
   <div class="side-player left">
     <div class="player-card x">
       <span class="label">Játékos X</span>
-      <span class="name">Alice</span>
+      <span class="name" id="playerX">Várakozás...</span>
       <hr>
-      <span class="name">Győzelmek: <span id="xWins">0</span></span>
+      <span class="name">
+        Győzelmek: <span id="xWins">0</span>
+      </span>
     </div>
   </div>
 
   <!-- Center board -->
   <div class="tictactoe-board" id="board">
-    <% for(let i = 0; i < 9; i++) { %>
+    <% for (let i = 0; i < 9; i++) { %>
       <div class="cell" data-index="<%= i %>"></div>
     <% } %>
   </div>
 
-  <h2 class="roomcode mb-3 mt-3" id="turnText">Rajtad a sor: X</h2>
-    <div class="bottomButtons mt-3">
-        <form action="/" method="get">
-          <button class="btn-leave">← Kilépés</button>
-      </form>
-      <button class="btn-ready">Új játék 2/<span id="playerReady">0</span></button>
-    </div>
+  <h2 class="roomcode mb-3 mt-3" id="turnText">
+    Várakozás a másik játékosra...
+  </h2>
+
+  <div class="bottomButtons mt-3">
+    <button type="button" class="btn-leave" id="btnLeave">← Kilépés</button>
+
+
+    <button class="btn-ready">
+      Új játék 2/<span id="playerReady">0</span>
+    </button>
   </div>
 
-  <!-- Right player -->
+  <!-- Right player (O) -->
   <div class="side-player right">
     <div class="player-card o">
       <span class="label">Játékos O</span>
-      <span class="name">Bob</span>
+      <span class="name" id="playerO">Várakozás...</span>
       <hr>
-      <span class="name">Győzelmek: <span id="oWins">0</span></span>
+      <span class="name">
+        Győzelmek: <span id="oWins">0</span>
+      </span>
     </div>
   </div>
- 
-  <%- include('footer') %>
+
 </div>
+
+<script>
+  window.LOBBY_CONFIG = <%- JSON.stringify(Lobby_Config) %>;
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/client.js"></script>
+<script src="/js/tictactoe.js"></script>
+
+<%- include('footer') %>

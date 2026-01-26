@@ -1,110 +1,84 @@
-const board = document.getElementById("board");
 const cells = document.querySelectorAll(".cell");
-const turnText = document.getElementById("turnText");
-const xWinsEl = document.getElementById("xWins");
-const oWinsEl = document.getElementById("oWins");
-const playerReady = document.getElementById("playerReady")
-const buttonReady = document.querySelector(".btn-ready")
+const readyBtn = document.querySelector(".btn-ready");
 
+let hasReady = false;
 
-let currentPlayer = "X";
-let gameActive = true;
-let gameState = Array(9).fill("");
-
-let matchEnded = false
-let xPlayerReady = false
-let oPlayerReady = false
-
-let xPlayerWins=0
-let oPlayerWins=0
-let playersReady=0
-
-function getReady(){
-    //TODO: playereket chekolni, hogy ki ki, ready-nél elvenni a ready-t ha újra megnyomja a player
-    if(matchEnded){
-        playersReady++
-        if(playersReady >=2){
-            playersReady=2
-            playerReady.textContent = playersReady
-            setTimeout(resetGame, 1500);
-            setTimeout(resetNumbers, 1500)
-            return
-        }
-        playerReady.textContent = playersReady
-    }
-    function resetNumbers(){
-        playersReady =0
-        playerReady.textContent = playersReady
-        matchEnded = false
-    }
-    function resetGame() {
-    gameState = Array(9).fill("");
-    gameActive = true;
-    currentPlayer = "X";
-    turnText.textContent = "Rajtad a sor: X";
-
-    cells.forEach(cell => {
-        cell.textContent = "";
-        cell.className = "cell";
-    });
-}
-}
-
-const winningCombinations = [
-  [0,1,2],
-  [3,4,5],
-  [6,7,8],
-  [0,3,6],
-  [1,4,7],
-  [2,5,8],
-  [0,4,8],
-  [2,4,6]
-];
-
-function handleCellClick(e) {
-  const cell = e.target;
-  const index = cell.dataset.index;
-
-  if (gameState[index] !== "" || !gameActive) return;
-
-  gameState[index] = currentPlayer;
-  cell.textContent = currentPlayer;
-  cell.classList.add(currentPlayer.toLowerCase());
-
-  if (checkWin()) {
-  turnText.textContent = `Player ${currentPlayer} wins!`;
-
-  if (currentPlayer === "X") {
-    xPlayerWins++;
-    xWinsEl.textContent = xPlayerWins;
-  } else {
-    oPlayerWins++;
-    oWinsEl.textContent = oPlayerWins;
-  }
-
-  gameActive = false;
-
-  matchEnded = true
-  return;
-}
-
-
-    if (!gameState.includes("")) {
-        turnText.textContent = "Draw!";
-        gameActive = false;
-        matchEnded = true
-        return; 
-    }
-
-  currentPlayer = currentPlayer === "X" ? "O" : "X";
-  turnText.textContent = `Rajtad a sor: ${currentPlayer}`;
-}
-
-function checkWin() {
-  return winningCombinations.some(combo => {
-    return combo.every(i => gameState[i] === currentPlayer);
+// Cell click – lépések
+cells.forEach(cell => {
+  cell.addEventListener("click", () => {
+    const index = Number(cell.dataset.index);
+    socket.emit("makeMove", { roomCode: window.LOBBY_CONFIG.roomCode, index });
   });
+});
+
+// Ready gomb – rematch kérése
+readyBtn.addEventListener("click", () => {
+  if (hasReady) return;
+  hasReady = true;
+  socket.emit("requestRematch", { roomCode: window.LOBBY_CONFIG.roomCode });
+});
+
+// Frissíti a játékosokat
+function updatePlayers(players) {
+  const xPlayer = players.find(p => p.symbol === "X");
+  const oPlayer = players.find(p => p.symbol === "O");
+
+  document.getElementById("roomCode").innerText = window.LOBBY_CONFIG.roomCode;
+  document.getElementById("playerX").innerText = xPlayer ? xPlayer.name : "Várakozás...";
+  document.getElementById("playerO").innerText = oPlayer ? oPlayer.name : "Várakozás...";
 }
 
-cells.forEach(cell => cell.addEventListener("click", handleCellClick));
-buttonReady.addEventListener("click", getReady)
+// Frissíti a boardot és győzelmeket
+function updateBoard(board, turn, wins) {
+  document.getElementById("turnText").innerText = `Rajtad a sor: ${turn}`;
+
+  cells.forEach((cell, i) => {
+    cell.innerText = board[i] || "";
+    cell.classList.remove("x","o");
+    if(board[i]==="X") cell.classList.add("x");
+    else if(board[i]==="O") cell.classList.add("o");
+  });
+
+  if(wins){
+    document.getElementById("xWins").innerText = wins.X;
+    document.getElementById("oWins").innerText = wins.O;
+  }
+}
+
+// Socket események
+
+// Játékosok frissítése
+socket.on("roomJoined", ({ players, status }) => updatePlayers(players));
+
+// Board és állapot frissítése
+socket.on("stateUpdate", ({ board, turn, status, winner, wins }) => {
+  updateBoard(board, turn, wins);
+
+  if(status==="finished"){
+    setTimeout(()=>{
+      alert(winner ? `${winner} nyert!` : "Döntetlen!");
+    },100);
+    hasReady = false;              
+    document.getElementById("playerReady").innerText = "0";
+});
+
+// Rematch státusz
+socket.on("rematchStatus", ({ readyCount }) => {
+  document.getElementById("playerReady").innerText = readyCount;
+  if(readyCount === 0) hasReady = false; 
+});
+
+// Ellenfél kilépett
+socket.on("opponentLeft", ({ message })=>{
+  alert(message);
+  document.getElementById("turnText").innerText = "Várakozás a másik játékosra...";
+  updateBoard(Array(9).fill(""), "X", {
+    X: document.getElementById("xWins").innerText,
+    O: document.getElementById("oWins").innerText
+  });
+  hasReady = false; 
+  document.getElementById("playerReady").innerText = "0";
+});
+
+// Hibakezelés
+socket.on("errorMessage", ({ message }) => alert(message));
