@@ -56,11 +56,16 @@ socket.on("stateUpdate", ({ board, turn, status, winner, wins }) => {
 
   if(status==="finished"){
     setTimeout(()=>{
-      alert(winner ? `${winner} nyert!` : "Döntetlen!");
+      showMessage(
+      "Játék vége",
+      winner, // "X", "O" vagy null
+      "Nyomjatok új játékot a folytatáshoz"
+    );
     },100);
     hasReady = false;              
     document.getElementById("playerReady").innerText = "0";
-});
+}})
+
 
 // Rematch státusz
 socket.on("rematchStatus", ({ readyCount }) => {
@@ -70,7 +75,7 @@ socket.on("rematchStatus", ({ readyCount }) => {
 
 // Ellenfél kilépett
 socket.on("opponentLeft", ({ message })=>{
-  alert(message);
+  showMessage("Kapcsolat megszakadt", null, message);
   document.getElementById("turnText").innerText = "Várakozás a másik játékosra...";
   updateBoard(Array(9).fill(""), "X", {
     X: document.getElementById("xWins").innerText,
@@ -80,5 +85,6 @@ socket.on("opponentLeft", ({ message })=>{
   document.getElementById("playerReady").innerText = "0";
 });
 
+
 // Hibakezelés
-socket.on("errorMessage", ({ message }) => alert(message));
+socket.on("errorMessage", ({ message }) => showMessage("Hiba", null, message));
