@@ -30,7 +30,7 @@ app.get('/main', (req, res) => {
 io.on("connection", socket => {
 
   socket.on("joinRoom", ({ playerName, roomCode }) => {
-    if (!playerName || playerName.length < 2) {
+    if (!playerName || playerName.length <= 3) {
       socket.emit("errorMessage", { message: "Név túl rövid" });
       return;
     }
